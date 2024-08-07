@@ -1,0 +1,41 @@
+﻿@model ZealEducationManager.Models.BatchViewModels.AddBatchViewModel
+
+@{
+    ViewData["Title"] = "Add Batch";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Add Batch</h5>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BatchCode" class="control-label"></label>
+                <input asp-for="BatchCode" class="form-control" />
+                <span asp-validation-for="BatchCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input type="date" asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input type="date" asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+

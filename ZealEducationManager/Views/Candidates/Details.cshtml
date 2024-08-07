@@ -1,0 +1,89 @@
+﻿@model ZealEducationManager.Entities.Candidate
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Candidate Profile</h5>
+        </div>
+    </div>
+</div>
+<div class="card-box m-b-0">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="profile-view">
+                <div class="profile-img-wrap">
+                    <div class="profile-img"><img class="avatar" src="~/assets/img/user.jpg" alt="">
+                    </div>
+                </div>
+                <div class="profile-basic">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="profile-info-left">
+                                <h3 class="user-name m-t-0">@Model.FirstName @Model.LastName</h3>
+                                <h5 class="company-role m-t-0 m-b-0">Zeal</h5>
+                                <small class="text-muted">Candidate</small>
+                                <div class="staff-id"> ID : @Model.CandidateId</div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <ul class="personal-info">
+                                <li>
+                                    <span class="title">Contact Info:</span>
+                                    <span class="text">@Model.ContactInfo</span>
+                                </li>
+                                <li>
+                                    <span class="title">Batch:</span>
+                                    <span class="text">@Model.Batch.BatchCode</span>
+                                </li>
+                                <li>
+                                    <span class="title">Birthday:</span>
+                                    <span class="text">@Model.DateOfBirth</span>
+                                </li>
+                                <li>
+                                    <span class="title">Day of Joining:</span>
+                                    <span class="text">@Model.DateOfJoining</span>
+                                </li>
+                                <li>
+                                    <span class="title">Status</span>
+                                    <span class="text">
+                                        @if (Model.Status == 1)
+                                        {
+                                            @:Currently Enrolled
+                                        }
+                                        @if (Model.Status == 2)
+                                        {
+                                            @:Temporarily Suspended
+                                        }
+                                        @if (Model.Status == 3)
+                                        {
+                                            @:Graduated
+                                        }
+                                        @if (Model.Status == 4)
+                                        {
+                                            @:Dropped Out
+                                        }
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="title">Outstanding Fee:</span>
+                                    <span class="text">@Model.OutstandingFee</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model?.CandidateId">Edit</a> |
+    <a class="btn btn-secondary" href="javascript:history.back()">Back to List</a>
+</div>

@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Batches Reports</h5>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="activity-list">
+            <li>
+                <a asp-action="BatchesAboutToEnd">Batches Abbout To End</a>
+            </li>
+            <li>
+                <a asp-action="RecentlyStartedBatches">Recently Started Batches</a>
+            </li>
+            <li>
+                <a asp-action="ListBatches">List Candidates In Batch</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Candidates Reports</h5>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="activity-list">
+            <li>
+                <a asp-action="MonthYearCandidates" asp-route-month="@DateTime.Now.Month" asp-route-year="@DateTime.Now.Year">List Candidates by Month/Year</a>
+            </li>
+            <li>
+                <a asp-controller="Batches" asp-action="Index">Candidates By Batch</a>
+            </li>
+            <li>
+                <a asp-action="OutstandingFeeCandidates">Candidates With Outstanding Fee</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Exam Reports</h5>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <ul class="activity-list">
+            <li>
+                <a asp-action="ListBatches">Exams By Batch</a>
+            </li>
+
+        </ul>
+
+    </div>
+</div>

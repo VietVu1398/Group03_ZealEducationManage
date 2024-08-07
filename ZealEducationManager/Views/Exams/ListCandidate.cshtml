@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ZealEducationManager.Entities.ExamResult>
+@{
+    ViewData["Title"] = "List Candidate";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    int examId = (int)ViewData["ExamId"];
+}
+
+<h1>ListCandidate</h1>
+<a asp-action="EnterMarks" asp-route-id="@examId" >Enter Mark</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Mark
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CandidateId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Candidate.FirstName) @Html.DisplayFor(modelItem => item.Candidate.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MarksObtained)
+                </td>
+                <td>
+                    <a asp-controller="Candidates" asp-action="Details" asp-route-id="@item.CandidateId">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

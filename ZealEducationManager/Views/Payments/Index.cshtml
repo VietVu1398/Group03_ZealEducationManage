@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ZealEducationManager.Entities.Payment>
+
+@{
+    ViewData["Title"] = "Financial";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Financial</h5>
+        </div>
+    </div>
+</div>
+<div class="content-page">
+	<div class="row">
+		<div class="col-sm-5 col-12">
+		</div>
+		<div class="col-sm-7 col-12 text-right add-btn-col">
+			<a asp-action="Create" class="btn btn-primary btn-rounded">
+				<i class="fas fa-plus"></i> Add New Payment
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 mb-3">
+			<div class="table-responsive">
+				<table class="table custom-table mb-0 datatable">
+					<thead class="thead-light">
+						<tr>
+							<th>Amount  </th>
+							<th>Payment Date</th>
+							<th>Candidate</th>
+							<th class="text-right">Action</th>
+						</tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PaymentDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Candidate.CandidateId) -  @Html.DisplayFor(modelItem => item.Candidate.FirstName)  @Html.DisplayFor(modelItem => item.Candidate.LastName)
+                                </td>
+                                <td class="text-right">
+                                    <a asp-action="Edit" asp-route-id="@item.PaymentId">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.PaymentId">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.PaymentId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

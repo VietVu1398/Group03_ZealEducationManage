@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ZealEducationManager.Entities.Candidate>
+@{
+    ViewData["Title"] = "Month Year Canddates";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    var month = ViewBag.Month;
+    var year = ViewBag.Year; 
+    int previousMonth = month - 1;
+    int previousYear = year;
+    if (previousMonth < 1)
+    {
+        previousMonth = 12;
+        previousYear -= 1;
+    }
+
+    // Calculate next month and year
+    int nextMonth = month + 1;
+    int nextYear = year;
+    if (nextMonth > 12)
+    {
+        nextMonth = 1;
+        nextYear += 1;
+    }
+
+    // Calculate previous and next years
+    int yearBefore = year - 1;
+    int yearAfter = year + 1;
+
+}
+
+<h2>Candidate Joined in @month/@year</h2>
+
+<table class="table datatable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Joining</th>
+            <th>Batch</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var candidate in Model)
+        {
+            <tr>
+                <td>@candidate.FirstName @candidate.LastName</td>
+                <td>@candidate.DateOfJoining.ToString("yyyy-MM-dd")</td>
+                <td>@candidate.Batch.BatchCode</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr/>
+<div class="text-center">
+    <a class="btn btn-outline-primary" asp-action="MonthYearCandidates" asp-route-month="@month" asp-route-year="@yearBefore">Previous Year</a> |
+    <a class="btn btn-outline-secondary" asp-action="MonthYearCandidates" asp-route-month="@previousMonth" asp-route-year="@previousYear">Previous Month</a> |
+    <a class="btn btn-outline-secondary" asp-action="MonthYearCandidates" asp-route-month="@nextMonth" asp-route-year="@nextYear">Next Month</a> |
+    <a class="btn btn-outline-primary" asp-action="MonthYearCandidates" asp-route-month="@month" asp-route-year="@yearAfter">Next Year</a>
+</div>

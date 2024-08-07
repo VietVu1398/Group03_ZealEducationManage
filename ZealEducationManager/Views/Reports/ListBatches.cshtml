@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ZealEducationManager.Entities.Batch>
+
+@{
+	ViewData["Title"] = "List Batches";
+	Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+
+<div class="page-header">
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+			<h5 class="text-uppercase mb-0 mt-0 page-title">List Batches </h5>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 mb-3">
+		<div class="table-responsive">
+			<table class="table custom-table mb-0 datatable">
+				<thead class="thead-light">
+					<tr>
+						<th>Batch Code </th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th class="text-right">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr class="Batch-completed">
+							<td>
+								@Html.DisplayFor(modelItem => item.BatchCode)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.StartDate)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.EndDate)
+							</td>
+							<td class="text-right">
+								<a asp-controller="Batches" asp-action="ListCandidate" asp-route-id="@item.BatchId">View Candidates</a> ||
+								<a asp-action="ListBatchExams" asp-route-id="@item.BatchId">Exams</a>
+							</td>
+						</tr>
+					}
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</div>

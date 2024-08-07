@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ZealEducationManager.Entities.Payment>
+@{
+    ViewData["Title"] = "MonthlyReport";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h1>MonthlyReport</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Candidate ID</th>
+            <th>Amount</th>
+            <th>Payment Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var payment in Model)
+        {
+            <tr>
+                <td>@payment.CandidateId</td>
+                <td>@payment.Amount.ToString("C")</td>
+                <td>@payment.PaymentDate.ToDateTime(TimeOnly.MinValue).ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

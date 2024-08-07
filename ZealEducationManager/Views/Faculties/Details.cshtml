@@ -1,0 +1,65 @@
+﻿@model ZealEducationManager.Entities.Faculty
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+
+
+
+<div class="page-header">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Falcuty Profile</h5>
+        </div>
+    </div>
+</div>
+<div class="card-box m-b-0">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="profile-view">
+                <div class="profile-img-wrap">
+                    <div class="profile-img">
+                        <img class="avatar" src="~/assets/img/user.jpg" alt="">
+                    </div>
+                </div>
+                <div class="profile-basic">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="profile-info-left">
+                                <h3 class="user-name m-t-0">@Model.FirstName @Model.LastName</h3>
+                                <small class="text-muted">Faculty</small>
+                                <a class="btn btn-primary">Add Batch</a>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <ul class="personal-info">
+                                <li>
+                                    <span class="title">ID:</span>
+                                    <span class="text">@Model.FacultyId</span>
+                                </li>
+                                <li>
+                                    <span class="title">Contact Info:</span>
+                                    <span class="text">@Model.ContactInfo</span>
+                                </li>
+                                <li>
+                                    <span class="title">Code:</span>
+                                    <span class="text">@Model.FacultyCode</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<div class="row">
+    <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model?.FacultyId">Edit</a> |
+    <a class="btn btn-secondary" href="javascript:history.back()">Back to List</a>
+</div>

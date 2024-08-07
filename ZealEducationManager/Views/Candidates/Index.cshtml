@@ -1,0 +1,84 @@
+﻿@model IEnumerable<ZealEducationManager.Entities.Candidate>
+
+@{
+    ViewData["Title"] = "All Candidates";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<div class="page-header">
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-12">
+			<h5 class="text-uppercase mb-0 mt-0 page-title">All Candidates</h5>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-4 col-12">
+	</div>
+	<div class="col-sm-8 col-12 text-right add-btn-col">
+		<a asp-action="Create" class="btn btn-primary btn-rounded float-right">
+			<i class="fas fa-plus"></i>
+			Add Candidate
+		</a>
+	</div>
+</div>
+<div class="row filter-row">
+	<div class="col-sm-6 col-md-3">
+		<div class="form-group form-focus">
+			<input type="text" class="form-control floating">
+			<label class="focus-label">Candidate ID</label>
+		</div>
+	</div>
+	<div class="col-sm-6 col-md-3">
+		<div class="form-group form-focus">
+			<input type="text" class="form-control floating">
+			<label class="focus-label">Candidate Name</label>
+		</div>
+	</div>
+	<div class="col-sm-6 col-md-3">
+		<div class="form-group form-focus select-focus">
+			<select class="select form-control">
+				<option>Select class</option>
+				<option>1</option>
+				<option>2</option>
+			</select>
+			<label class="focus-label">Class</label>
+		</div>
+	</div>
+	<div class="col-sm-6 col-md-3">
+		<a href="#" class="btn btn-search rounded btn-block mb-3"> search </a>
+	</div>
+</div>
+
+
+<div class="row staff-grid-row">
+	@foreach (var item in Model)
+	{
+		<div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
+			<div class="profile-widget">
+				<div class="profile-img">
+					<a asp-action="Details" asp-route-id="@item.CandidateId"><img class="avatar" src="~/assets/img/user.jpg" alt=""></a>
+				</div>
+				<div class="dropdown profile-action">
+					<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+						<i class="fas fa-ellipsis-v"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+						<a class="dropdown-item" asp-action="Edit" asp-route-id="@item.CandidateId">
+							<i class="fas fa-pencil-alt m-r-5"></i>
+							Edit
+						</a>
+						<a class="dropdown-item" asp-action="Delete" asp-route-id="@item.CandidateId">
+							<i class="fas fa-trash-alt m-r-5"></i> Delete
+						</a>
+					</div>
+				</div>
+				<h4 class="user-name m-t-10 m-b-0 text-ellipsis">
+					<a asp-action="Details" asp-route-id="@item.CandidateId">@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</a>
+				</h4>
+				<div class="small text-muted">@Html.DisplayFor(modelItem => item.Batch.BatchCode)</div>
+			</div>
+		</div>
+	}
+</div>
+

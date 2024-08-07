@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ZealEducationManager.Models.ExamsViewModel.EnterMarksModel>
+@{
+    ViewData["Title"] = "EnterMarks";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h2>Enter Exam Results</h2>
+
+<form method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Candidate Name</th>
+                <th>Marks Obtained</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <tr>
+                    <td>
+                        @Html.HiddenFor(modelItem => item.ResultId)
+                        @Html.HiddenFor(modelItem => item.ExamId)
+                        @Html.HiddenFor(modelItem => item.CandidateId)
+                        @Html.DisplayFor(modelItem => item.Candidate.FirstName)
+
+                        @Html.DisplayFor(modelItem => item.Candidate.LastName)
+                    </td>
+                    <td>
+                        <input type="text" asp-for="@item.MarksObtained" class="form-control" />
+                        <span asp-validation-for="@item.MarksObtained" class="text-danger"></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Save Results</button>
+    <a class="btn btn-secondary" href="javascript:history.back()">Back</a>
+</form>
