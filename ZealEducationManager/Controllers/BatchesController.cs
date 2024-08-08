@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using ZealEducationManager.Models.CandidatesViewModels;
 
 namespace ZealEducationManager.Controllers
 {
+    [Authorize]
     public class BatchesController : Controller
     {
         private readonly ZealEducationManagerContext _context;

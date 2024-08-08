@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.Pkcs;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using ZealEducationManager.Models.CandidatesViewModels;
 
 namespace ZealEducationManager.Controllers
 {
+    [Authorize]
     public class CandidatesController : Controller
     {
         private readonly ZealEducationManagerContext _context;
@@ -31,14 +33,16 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var candidate = await _context.Candidates.Include(c => c.Batch)
                 .FirstOrDefaultAsync(m => m.CandidateId == id);
             if (candidate == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(candidate);
@@ -89,12 +93,14 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
             var candidate = await _context.Candidates.FindAsync(id);
             if (candidate == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var viewModel = new EditCandidateView
@@ -125,7 +131,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id != viewmodel.CandidateId)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             if (ModelState.IsValid)
@@ -148,7 +155,8 @@ namespace ZealEducationManager.Controllers
                 {
                     if (!CandidateExists(viewmodel.CandidateId))
                     {
-                        return NotFound();
+                        TempData["message"] = "Cannot find any data";
+                        return RedirectToAction("Message", "Dashboard");
                     }
                     else
                     {
@@ -184,14 +192,16 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var candidate = await _context.Candidates
                 .FirstOrDefaultAsync(m => m.CandidateId == id);
             if (candidate == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");s
             }
 
             return View(candidate);
@@ -202,14 +212,22 @@ namespace ZealEducationManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var candidate = await _context.Candidates.FindAsync(id);
-            if (candidate != null)
+            try
             {
-                _context.Candidates.Remove(candidate);
-            }
+                var candidate = await _context.Candidates.FindAsync(id);
+                if (candidate != null)
+                {
+                    _context.Candidates.Remove(candidate);
+                }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                TempData["message"] = "Cannot Delete this Record";
+                return RedirectToAction("Message", "Dashboard");
+            }
         }
 
         private bool CandidateExists(int id)

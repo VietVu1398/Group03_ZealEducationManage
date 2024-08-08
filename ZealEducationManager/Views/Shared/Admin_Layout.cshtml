@@ -41,21 +41,26 @@
 						<a asp-controller="Dashboard" asp-action="Index" class="mobile-logo d-md-block d-lg-none d-block"><img src="~/assets/img/logo1.png" alt="" width="30" height="30"></a>
 					</li>
 				</ul>
+				@if (User.Identity.IsAuthenticated)
+				{
+					<ul class="nav user-menu float-right">
+						<li class="nav-item dropdown has-arrow">
+							<a href="#" class=" nav-link user-link" data-toggle="dropdown">
+								<span class="user-img">
+									<img class="rounded-circle" src="~/assets/img/user-06.jpg" width="30" alt="Admin">
+									<span class="status online"></span>
+								</span>
+								<span>@User.Identity.Name</span>
+							</a>
+							<div class="dropdown-menu">
+								<form asp-controller="Security" asp-action="Logout" method="post">
+									<button type="submit" class="dropdown-item">Logout</button>
+								</form>
+							</div>
+						</li>
+					</ul>
+				}
 
-				<ul class="nav user-menu float-right">
-					<li class="nav-item dropdown has-arrow">
-						<a href="#" class=" nav-link user-link" data-toggle="dropdown">
-							<span class="user-img">
-								<img class="rounded-circle" src="~/assets/img/user-06.jpg" width="30" alt="Admin">
-								<span class="status online"></span>
-							</span>
-							<span>Admin</span>
-						</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" >Logout</a>
-						</div>
-					</li>
-				</ul>
 				<div class="dropdown mobile-user-menu float-right">
 					<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a>
 					<div class="dropdown-menu dropdown-menu-right">

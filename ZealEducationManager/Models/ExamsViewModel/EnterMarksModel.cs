@@ -13,8 +13,8 @@ namespace ZealEducationManager.Models.ExamsViewModel
         [Range(0, 100, ErrorMessage = "Marks must be between 0 and 100.")]
         public decimal? MarksObtained { get; set; }
 
-        public virtual Candidate Candidate { get; set; } = null!;
+        public virtual Candidate? Candidate { get; set; } = null!;
 
-        public virtual Exam Exam { get; set; } = null!;
+        public virtual Exam? Exam { get; set; } = null!;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using ZealEducationManager.Models.ExamsViewModel;
 
 namespace ZealEducationManager.Controllers
 {
+    [Authorize]
     public class ExamsController : Controller
     {
         private readonly ZealEducationManagerContext _context;
@@ -128,7 +130,7 @@ namespace ZealEducationManager.Controllers
         //Enter Mark For Candidate
         public async Task<IActionResult> EnterMarks(int id)
         {
-            var examresult = await _context.ExamResults.Select(er => new EnterMarksModel
+            var examresult = await _context.ExamResults.Where(e => e.ExamId == id).Select(er => new EnterMarksModel
             {
                 ResultId = er.ResultId,
                 ExamId = id,
@@ -137,7 +139,6 @@ namespace ZealEducationManager.Controllers
                 Candidate = er.Candidate,
                 Exam = er.Exam
             })
-                .Where(er => er.ExamId == id)
             .ToListAsync();
 
             return View(examresult);
@@ -171,18 +172,9 @@ namespace ZealEducationManager.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                PrintExamResultsToConsole(viewModel);
                 return RedirectToAction("Index"); // Redirect to a relevant action
             }
-            PrintExamResultsToConsole(viewModel);
             return View("EnterMarks", viewModel);
-        }
-        private void PrintExamResultsToConsole(List<EnterMarksModel> examResults)
-        {
-            foreach (var result in examResults)
-            {
-                Console.WriteLine($"ExamId: {result.ExamId}, CandidateId: {result.CandidateId}, MarksObtained: {result.MarksObtained}");
-            }
         }
 
         // GET: Exams/Edit/5

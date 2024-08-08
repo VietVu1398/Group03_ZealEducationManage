@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ZealEducationManager.Entities;
 
@@ -7,7 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 //Add Context
 builder.Services.AddDbContext<ZealEducationManagerContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("ZealEducationManagerContext")));
-
+//Add Identity
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Security/Login";
+        options.AccessDeniedPath = "/Security/AccessDenied";
+    });
 
 var app = builder.Build();
 
@@ -23,6 +31,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

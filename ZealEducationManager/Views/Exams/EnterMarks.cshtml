@@ -6,7 +6,7 @@
 
 <h2>Enter Exam Results</h2>
 
-<form method="post">
+<form method="post" asp-action="SaveMarks">
     <table class="table">
         <thead>
             <tr>
@@ -20,9 +20,9 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <tr>
                     <td>
-                        @Html.HiddenFor(modelItem => item.ResultId)
-                        @Html.HiddenFor(modelItem => item.ExamId)
-                        @Html.HiddenFor(modelItem => item.CandidateId)
+                        <input type="hidden"  asp-for="@item.ResultId" />
+                        <input type="hidden" asp-for="@item.ExamId" />
+                        <input type="hidden" asp-for="@item.CandidateId" />
                         @Html.DisplayFor(modelItem => item.Candidate.FirstName)
 
                         @Html.DisplayFor(modelItem => item.Candidate.LastName)

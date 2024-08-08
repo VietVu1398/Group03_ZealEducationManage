@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ZealEducationManager.Controllers
 {
-	public class DashboardController : Controller
+    [Authorize]
+    public class DashboardController : Controller
 	{
 		[Route("home")]
 		public IActionResult Index()
