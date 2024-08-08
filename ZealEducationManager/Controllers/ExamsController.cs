@@ -34,7 +34,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var exam = await _context.Exams
@@ -43,7 +44,8 @@ namespace ZealEducationManager.Controllers
                 .FirstOrDefaultAsync(m => m.ExamId == id);
             if (exam == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(exam);
@@ -53,15 +55,17 @@ namespace ZealEducationManager.Controllers
 		{
 			if (id == null)
 			{
-				return NotFound();
-			}
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
+            }
 
 			var exam = await _context.Exams
 				.FirstOrDefaultAsync(m => m.ExamId == id);
 			if (exam == null)
 			{
-				return NotFound();
-			}
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
+            }
 			var listCandidate = await _context.ExamResults.Include(e => e.Candidate)
                 .Where(c => c.ExamId == exam.ExamId).ToListAsync();
             ViewData["ExamId"] = exam.ExamId;
@@ -127,55 +131,105 @@ namespace ZealEducationManager.Controllers
 			return View(viewModel);
         }
 
-        //Enter Mark For Candidate
-        public async Task<IActionResult> EnterMarks(int id)
+        // View For Input Mark
+        public async Task<IActionResult> InputMarks(int? id)
         {
-            var examresult = await _context.ExamResults.Where(e => e.ExamId == id).Select(er => new EnterMarksModel
+            if (id == null)
             {
-                ResultId = er.ResultId,
-                ExamId = id,
-                CandidateId = er.CandidateId,
-                MarksObtained = er.MarksObtained,
-                Candidate = er.Candidate,
-                Exam = er.Exam
-            })
-            .ToListAsync();
-
-            return View(examresult);
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
+            }
+            var examresult = await _context.ExamResults.Where(er => er.ResultId == id).Include(er => er.Candidate).FirstOrDefaultAsync();
+            if (examresult == null)
+            {
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
+            }
+            var viewModel = new InputMarkViewModel
+            {
+                ResultId = examresult.ResultId,
+                CandidateId = examresult.CandidateId,
+                ExamId = examresult.ExamId,
+                MarksObtained = examresult.MarksObtained,
+                Candidate = examresult.Candidate
+            };
+            return View(viewModel);
         }
+
+
+        //Save Input Mark
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SaveMarks(List<EnterMarksModel> viewModel )
+        public async Task<IActionResult>  SaveInputMark(InputMarkViewModel viewmodel)
         {
             if (ModelState.IsValid)
             {
-                foreach (var result in viewModel)
-                {
-                    var eachResult = await _context.ExamResults
-                        .FirstOrDefaultAsync(er => er.ExamId == result.ExamId && er.CandidateId == result.CandidateId);
+                var resultexam = await _context.ExamResults.Where(er => er.ResultId == viewmodel.ResultId).FirstOrDefaultAsync();
 
-                    if (eachResult == null)
-                    {
-                        eachResult = new ExamResult
-                        {
-                            ExamId = result.ExamId,
-                            CandidateId = result.CandidateId,
-                            MarksObtained = result.MarksObtained
-                        };
-                        _context.ExamResults.Add(eachResult);
-                    }
-                    else
-                    {
-                        eachResult.MarksObtained = result.MarksObtained;
-                        _context.ExamResults.Update(eachResult);
-                    }
+                if (resultexam == null)
+                {
+                    TempData["message"] = "Cannot find any data";
+                    return RedirectToAction("Message", "Dashboard");
                 }
+                resultexam.MarksObtained = viewmodel.MarksObtained;
+                        _context.ExamResults.Update(resultexam);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index"); // Redirect to a relevant action
+                return RedirectToAction("Index");
             }
-            return View("EnterMarks", viewModel);
+            return View("InputMarks", viewmodel);
+
         }
+
+        //Enter Mark For Candidate
+        //public async Task<IActionResult> EnterMarks(int id)
+        //{
+        //    var examresult = await _context.ExamResults.Where(e => e.ExamId == id).Select(er => new EnterMarksModel
+        //    {
+        //        ResultId = er.ResultId,
+        //        ExamId = id,
+        //        CandidateId = er.CandidateId,
+        //        MarksObtained = er.MarksObtained,
+        //        Candidate = er.Candidate,
+        //        Exam = er.Exam
+        //    })
+        //    .ToListAsync();
+
+        //    return View(examresult);
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> SaveMarks(List<EnterMarksModel> viewModel )
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        foreach (var result in viewModel)
+        //        {
+        //            var eachResult = await _context.ExamResults
+        //                .Where(er => er.ExamId == result.ExamId && er.CandidateId == result.CandidateId).FirstOrDefaultAsync();
+
+        //            if (eachResult == null)
+        //            {
+        //                eachResult = new ExamResult
+        //                {
+        //                    ExamId = result.ExamId,
+        //                    CandidateId = result.CandidateId,
+        //                    MarksObtained = result.MarksObtained
+        //                };
+        //                _context.ExamResults.Add(eachResult);
+        //            }
+        //            else
+        //            {
+        //                eachResult.MarksObtained = result.MarksObtained;
+        //                _context.ExamResults.Update(eachResult);
+        //            }
+        //        }
+
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction("Index"); // Redirect to a relevant action
+        //    }
+        //    return View("EnterMarks", viewModel);
+        //}
 
         // GET: Exams/Edit/5
         [Route("exam/edit")]
@@ -183,12 +237,14 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
             var exam = await _context.Exams.FindAsync(id);
             if (exam == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var viewModel = new EditExamModel
@@ -219,7 +275,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id != viewModel.ExamId)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             if (ModelState.IsValid)
@@ -237,7 +294,8 @@ namespace ZealEducationManager.Controllers
                 {
                     if (!ExamExists(viewModel.ExamId))
                     {
-                        return NotFound();
+                        TempData["message"] = "Cannot find any data";
+                        return RedirectToAction("Message", "Dashboard");
                     }
                     else
                     {
@@ -254,7 +312,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var exam = await _context.Exams
@@ -263,7 +322,8 @@ namespace ZealEducationManager.Controllers
                 .FirstOrDefaultAsync(m => m.ExamId == id);
             if (exam == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(exam);
@@ -274,6 +334,7 @@ namespace ZealEducationManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            try { 
             var exam = await _context.Exams.FindAsync(id);
             if (exam != null)
             {
@@ -282,7 +343,12 @@ namespace ZealEducationManager.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
+        } catch
+            {
+                TempData["message"] = "Cannot Delete this Record";
+                return RedirectToAction("Message","Dashboard");
+    }
+}
 
         private bool ExamExists(int id)
         {

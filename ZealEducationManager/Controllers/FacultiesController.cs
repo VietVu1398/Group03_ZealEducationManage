@@ -31,14 +31,16 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var faculty = await _context.Faculties
                 .FirstOrDefaultAsync(m => m.FacultyId == id);
             if (faculty == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(faculty);
@@ -71,13 +73,15 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var faculty = await _context.Faculties.FindAsync(id);
             if (faculty == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
             return View(faculty);
         }
@@ -91,7 +95,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id != faculty.FacultyId)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             if (ModelState.IsValid)
@@ -105,7 +110,8 @@ namespace ZealEducationManager.Controllers
                 {
                     if (!FacultyExists(faculty.FacultyId))
                     {
-                        return NotFound();
+                        TempData["message"] = "Cannot find any data";
+                        return RedirectToAction("Message", "Dashboard");
                     }
                     else
                     {
@@ -122,14 +128,16 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var faculty = await _context.Faculties
                 .FirstOrDefaultAsync(m => m.FacultyId == id);
             if (faculty == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(faculty);

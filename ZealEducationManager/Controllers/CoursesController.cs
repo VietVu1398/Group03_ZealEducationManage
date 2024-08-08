@@ -61,6 +61,12 @@ namespace ZealEducationManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                var existCourseCode = _context.Courses.FirstOrDefault(c => c.CourseCode == course.CourseCode);
+                if (existCourseCode != null)
+                {
+                    ModelState.AddModelError("CourseCode", "Course Code has already existed");
+                    return View(course);
+                }
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -101,6 +107,12 @@ namespace ZealEducationManager.Controllers
             {
                 try
                 {
+                    var existCourseCode = _context.Courses.Where(c => c.CourseCode == course.CourseCode && c.CourseId != id).FirstOrDefault();
+                    if (existCourseCode != null)
+                    {
+                        ModelState.AddModelError("CourseCode", "Course Code has already existed");
+                        return View(course);
+                    }
                     _context.Update(course);
                     await _context.SaveChangesAsync();
                 }

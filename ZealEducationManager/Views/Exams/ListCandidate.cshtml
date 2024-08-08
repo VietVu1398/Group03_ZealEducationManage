@@ -6,7 +6,7 @@
 }
 
 <h1>ListCandidate</h1>
-<a asp-action="EnterMarks" asp-route-id="@examId" >Enter Mark</a>
+@* <a asp-action="EnterMarks" asp-route-id="@examId" >Enter Mark</a> *@
 <table class="table">
     <thead>
         <tr>
@@ -35,10 +35,17 @@
                     @Html.DisplayFor(modelItem => item.Candidate.FirstName) @Html.DisplayFor(modelItem => item.Candidate.LastName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MarksObtained)
+                    @if (item.MarksObtained == null)
+                    {
+                        <a class="btn btn-secondary" asp-action="InputMarks" asp-route-id="@item.ResultId">Enter Mark</a>
+                    } else
+                    {
+                        @Html.DisplayFor(modelItem => item.MarksObtained)
+                    }
                 </td>
                 <td>
-                    <a asp-controller="Candidates" asp-action="Details" asp-route-id="@item.CandidateId">View Details</a>
+                    <a class="btn btn-secondary" asp-controller="Candidates" asp-action="Details" asp-route-id="@item.CandidateId">View Details</a> ||
+                    <a class="btn btn-secondary" asp-action="InputMarks" asp-route-id="@item.ResultId">Edit Mark</a>
                 </td>
             </tr>
         }

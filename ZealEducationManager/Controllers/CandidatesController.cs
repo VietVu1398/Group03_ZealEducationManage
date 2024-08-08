@@ -201,7 +201,7 @@ namespace ZealEducationManager.Controllers
             if (candidate == null)
             {
                 TempData["message"] = "Cannot find any data";
-                return RedirectToAction("Message", "Dashboard");s
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(candidate);

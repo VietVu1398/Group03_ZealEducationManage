@@ -35,6 +35,7 @@
             <th>Name</th>
             <th>Date of Joining</th>
             <th>Batch</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -44,6 +45,7 @@
                 <td>@candidate.FirstName @candidate.LastName</td>
                 <td>@candidate.DateOfJoining.ToString("yyyy-MM-dd")</td>
                 <td>@candidate.Batch.BatchCode</td>
+                <td><a asp-controller="Candidates" asp-action="Details" asp-route-id="@candidate.CandidateId" >View Details</a></td>
             </tr>
         }
     </tbody>

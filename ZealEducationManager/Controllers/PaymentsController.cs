@@ -34,7 +34,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var payment = await _context.Payments
@@ -42,7 +43,8 @@ namespace ZealEducationManager.Controllers
                 .FirstOrDefaultAsync(m => m.PaymentId == id);
             if (payment == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
             return View(payment);
         }
@@ -110,13 +112,15 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var payment = await _context.Payments.FindAsync(id);
             if (payment == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
             ViewData["CandidateId"] = new SelectList(_context.Candidates, "CandidateId", "CandidateId", payment.CandidateId);
             return View(payment);
@@ -129,7 +133,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id != payment.PaymentId)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             if (ModelState.IsValid)
@@ -143,7 +148,8 @@ namespace ZealEducationManager.Controllers
                 {
                     if (!PaymentExists(payment.PaymentId))
                     {
-                        return NotFound();
+                        TempData["message"] = "Cannot find any data";
+                        return RedirectToAction("Message", "Dashboard");
                     }
                     else
                     {
@@ -161,7 +167,8 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var payment = await _context.Payments
@@ -169,7 +176,8 @@ namespace ZealEducationManager.Controllers
                 .FirstOrDefaultAsync(m => m.PaymentId == id);
             if (payment == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(payment);
