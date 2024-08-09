@@ -1,0 +1,22 @@
+﻿@model ZealEducationManager.Models.Faculties.AssignFacultyViewModel;
+@{
+    ViewData["Title"] = "AssignBatches";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h1>Assign Batches</h1>
+
+<form asp-action="AssignBatches" method="post">
+    <input type="hidden" asp-for="FacultyID" />
+
+    <div class="form-group">
+        <label asp-for="SelectedBatch">Select Batch</label>
+        <select asp-for="SelectedBatch" asp-items="Model.Batches" class="form-control">
+            <option value="">-- Select a Batch --</option>
+        </select>
+        <span asp-validation-for="SelectedBatch" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Assign</button>
+</form>
+

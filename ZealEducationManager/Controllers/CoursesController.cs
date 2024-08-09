@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ZealEducationManager.Entities;
+using ZealEducationManager.Models.CourseViewModels;
 
 namespace ZealEducationManager.Controllers
 {
@@ -57,7 +58,7 @@ namespace ZealEducationManager.Controllers
         // POST: Courses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourseId,CourseCode,CourseName,CourseFee")] Course course)
+        public async Task<IActionResult> Create([Bind("CourseId,CourseCode,CourseName,CourseFee")] AddCourseView course)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +68,13 @@ namespace ZealEducationManager.Controllers
                     ModelState.AddModelError("CourseCode", "Course Code has already existed");
                     return View(course);
                 }
-                _context.Add(course);
+                var newCourse = new Course
+                {
+                    CourseCode = course.CourseCode,
+                    CourseName = course.CourseName,
+                    CourseFee = course.CourseFee
+                };
+                _context.Add(newCourse);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -89,13 +96,20 @@ namespace ZealEducationManager.Controllers
                 TempData["message"] = "Cannot find any data";
                 return RedirectToAction("Message", "Dashboard");
             }
-            return View(course);
+            var editCourse = new EditCourseViewModel
+            {
+                CourseId = course.CourseId,
+                CourseCode = course.CourseCode,
+                CourseName = course.CourseName,
+                CourseFee = course.CourseFee
+            };
+            return View(editCourse);
         }
 
         // POST: Courses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourseId,CourseCode,CourseName,CourseFee")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("CourseId,CourseCode,CourseName,CourseFee")] EditCourseViewModel course)
         {
             if (id != course.CourseId)
             {
@@ -113,7 +127,14 @@ namespace ZealEducationManager.Controllers
                         ModelState.AddModelError("CourseCode", "Course Code has already existed");
                         return View(course);
                     }
-                    _context.Update(course);
+                    var updateCourse = await _context.Courses.Where(c => c.CourseId == id).FirstOrDefaultAsync();
+                    if (updateCourse != null)
+                    {
+                        updateCourse.CourseCode = course.CourseCode;
+                        updateCourse.CourseName = course.CourseName;
+                        updateCourse.CourseFee = course.CourseFee;
+                        _context.Update(updateCourse);
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

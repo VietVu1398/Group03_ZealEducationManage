@@ -119,6 +119,13 @@ namespace ZealEducationManager.Controllers
             {
                 try
                 {
+                    var existBatchCode = _context.Batches
+                        .Where(c => c.BatchCode == batch.BatchCode && c.BatchId != batch.BatchId).FirstOrDefault();
+                    if (existBatchCode != null)
+                    {
+                        ModelState.AddModelError("BatchCode", "Batch Code has already existed");
+                        return View(batch);
+                    }
                     if (batch.StartDate >= batch.EndDate)
                     {
                         ModelState.AddModelError("EndDate", "The start date must be earlier than the end date");

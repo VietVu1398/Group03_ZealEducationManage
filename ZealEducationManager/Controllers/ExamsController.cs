@@ -51,26 +51,6 @@ namespace ZealEducationManager.Controllers
             return View(exam);
         }
 
-		public async Task<IActionResult> ListCandidate(int? id)
-		{
-			if (id == null)
-			{
-                TempData["message"] = "Cannot find any data";
-                return RedirectToAction("Message", "Dashboard");
-            }
-
-			var exam = await _context.Exams
-				.FirstOrDefaultAsync(m => m.ExamId == id);
-			if (exam == null)
-			{
-                TempData["message"] = "Cannot find any data";
-                return RedirectToAction("Message", "Dashboard");
-            }
-			var listCandidate = await _context.ExamResults.Include(e => e.Candidate)
-                .Where(c => c.ExamId == exam.ExamId).ToListAsync();
-            ViewData["ExamId"] = exam.ExamId;
-            return View(listCandidate);
-		}
 
 		// GET: Exams/Create
 		public IActionResult Create()
@@ -131,6 +111,30 @@ namespace ZealEducationManager.Controllers
 			return View(viewModel);
         }
 
+
+        // View Candidates in Exam
+
+        public async Task<IActionResult> ListCandidate(int? id)
+        {
+            if (id == null)
+            {
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
+            }
+
+            var exam = await _context.Exams
+                .FirstOrDefaultAsync(m => m.ExamId == id);
+            if (exam == null)
+            {
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
+            }
+            var listCandidate = await _context.ExamResults.Include(e => e.Candidate)
+                .Where(c => c.ExamId == exam.ExamId).ToListAsync();
+            ViewData["ExamId"] = exam.ExamId;
+            return View(listCandidate);
+        }
+
         // View For Input Mark
         public async Task<IActionResult> InputMarks(int? id)
         {
@@ -175,7 +179,7 @@ namespace ZealEducationManager.Controllers
                         _context.ExamResults.Update(resultexam);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("ListCandidate", new {id = resultexam.ExamId});
             }
             return View("InputMarks", viewmodel);
 

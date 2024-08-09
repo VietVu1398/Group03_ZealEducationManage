@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ZealEducationManager.Entities;
+using ZealEducationManager.Models.Faculties;
 
 namespace ZealEducationManager.Controllers
 {
@@ -35,7 +36,7 @@ namespace ZealEducationManager.Controllers
                 return RedirectToAction("Message", "Dashboard");
             }
 
-            var faculty = await _context.Faculties
+            var faculty = await _context.Faculties.Include(f => f.FacultyBatches).ThenInclude(fb => fb.Batch)
                 .FirstOrDefaultAsync(m => m.FacultyId == id);
             if (faculty == null)
             {
@@ -51,10 +52,6 @@ namespace ZealEducationManager.Controllers
         {
             return View();
         }
-
-        // POST: Faculties/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FacultyId,FirstName,LastName,ContactInfo,FacultyCode")] Faculty faculty)
@@ -87,8 +84,6 @@ namespace ZealEducationManager.Controllers
         }
 
         // POST: Faculties/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("FacultyId,FirstName,LastName,ContactInfo,FacultyCode")] Faculty faculty)
@@ -162,5 +157,70 @@ namespace ZealEducationManager.Controllers
         {
             return _context.Faculties.Any(e => e.FacultyId == id);
         }
+
+        //Add Batch for Teacher
+        public async Task<IActionResult> AssignBatches(int id)
+        {
+            if (id == null)
+            {
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
+            }
+            var faculty = await _context.Faculties.FindAsync(id);
+            if (faculty == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new AssignFacultyViewModel
+            {
+                FacultyID = id,
+                Batches = _context.Batches
+                    .Where(b => !_context.FacultyBatches.Any(fb => fb.BatchId == b.BatchId && fb.FacultyId == id))
+                    .Select(b => new SelectListItem
+                    {
+                        Value = b.BatchId.ToString(),
+                        Text = b.BatchCode
+                    }).ToList()
+            };
+
+            return View(viewModel);
+        }
+
+        // POST: Faculty/AssignBatches
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignBatches(AssignFacultyViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var faculty = await _context.Faculties
+                .Include(f => f.FacultyBatches)
+                .FirstOrDefaultAsync(f => f.FacultyId == model.FacultyID);
+
+            if (faculty == null)
+            {
+                return NotFound();
+            }
+
+            // Add new assignment
+            if (model.SelectedBatch.HasValue)
+            {
+                int batchId = model.SelectedBatch.Value;
+                _context.FacultyBatches.Add(new FacultyBatch
+                {
+                    FacultyId = model.FacultyID,
+                    BatchId = batchId
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Details), new { id = model.FacultyID });
+        }
+
     }
 }

@@ -30,7 +30,6 @@
                             <div class="profile-info-left">
                                 <h3 class="user-name m-t-0">@Model.FirstName @Model.LastName</h3>
                                 <small class="text-muted">Faculty</small>
-                                <a class="btn btn-primary">Add Batch</a>
                             </div>
                         </div>
                         <div class="col-md-7">
@@ -62,4 +61,33 @@
 <div class="row">
     <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model?.FacultyId">Edit</a> |
     <a class="btn btn-secondary" href="javascript:history.back()">Back to List</a>
+</div>
+<br/>
+<br/>
+<h2>Batches of this Teacher</h2>
+<div class="row m-3">
+    <div class="col-md-4">
+        <ul class="personal-info">
+            @if (Model.FacultyBatches != null && Model.FacultyBatches.Any())
+            {
+                foreach (var facultyBatch in Model.FacultyBatches)
+                {
+                    <li>
+                        <a asp-controller="Batches" asp-action="ListCandidate" asp-route-id="@facultyBatch.BatchId">
+                            <h3>@facultyBatch.Batch.BatchCode</h3>
+                        </a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li>
+                    <h3>No batches assigned</h3>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <a class="btn btn-primary" asp-action="AssignBatches" asp-route-id="@Model.FacultyId">Add Batch For Teacher</a>
+    </div>
 </div>
