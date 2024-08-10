@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ZealEducationManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8ac6a9701060fab2d121f0308291d19b320b7c2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d6545129ad6bd34edef5cd6c2ef77be88c67977")]
 [assembly: System.Reflection.AssemblyProductAttribute("ZealEducationManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ZealEducationManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -16,22 +16,22 @@
             <input type="hidden" asp-for="FacultyId" />
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
+                <input asp-for="FirstName" class="form-control" maxlength="50" />
                 <span asp-validation-for="FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
+                <input asp-for="LastName" class="form-control" maxlength="50" />
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ContactInfo" class="control-label"></label>
-                <input asp-for="ContactInfo" class="form-control" />
+                <input asp-for="ContactInfo" class="form-control" maxlength="100" />
                 <span asp-validation-for="ContactInfo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FacultyCode" class="control-label"></label>
-                <input asp-for="FacultyCode" class="form-control" />
+                <input asp-for="FacultyCode" class="form-control" maxlength="20" />
                 <span asp-validation-for="FacultyCode" class="text-danger"></span>
             </div>
             <div class="form-group">

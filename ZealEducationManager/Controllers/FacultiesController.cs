@@ -143,15 +143,23 @@ namespace ZealEducationManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var faculty = await _context.Faculties.FindAsync(id);
-            if (faculty != null)
-            {
-                _context.Faculties.Remove(faculty);
-            }
+            try 
+            { 
+                var faculty = await _context.Faculties.FindAsync(id);
+                if (faculty != null)
+                {
+                    _context.Faculties.Remove(faculty);
+                }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                TempData["message"] = "Cannot Delete this Record";
+                return RedirectToAction("Message", "Dashboard");
+            }
+}
 
         private bool FacultyExists(int id)
         {

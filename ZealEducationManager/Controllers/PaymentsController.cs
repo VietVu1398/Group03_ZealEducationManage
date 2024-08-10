@@ -62,6 +62,12 @@ namespace ZealEducationManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                var date = viewModel.PaymentDate.ToDateTime(TimeOnly.MinValue);
+                if (date > DateTime.Today)
+                {
+                    ModelState.AddModelError("PaymentDate", "The PaymentDate is later than today, Please check again!");
+                    return View(viewModel);
+                }
                 var existCandidate = await _context.Candidates.FindAsync(viewModel.CandidateId);
                 if (existCandidate == null)
                 {

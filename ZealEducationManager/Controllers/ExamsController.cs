@@ -166,8 +166,19 @@ namespace ZealEducationManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult>  SaveInputMark(InputMarkViewModel viewmodel)
         {
+            
             if (ModelState.IsValid)
             {
+                if (viewmodel.MarksObtained != null)
+                {
+                    double doubleValue = (double)viewmodel.MarksObtained;
+                    if (doubleValue > 100 || doubleValue < 0)
+                    {
+                        ModelState.AddModelError("MarksObtained", "The Mark must be between 0 and 100");
+                        return View("InputMarks", viewmodel);
+                    }
+                }
+
                 var resultexam = await _context.ExamResults.Where(er => er.ResultId == viewmodel.ResultId).FirstOrDefaultAsync();
 
                 if (resultexam == null)
@@ -176,7 +187,7 @@ namespace ZealEducationManager.Controllers
                     return RedirectToAction("Message", "Dashboard");
                 }
                 resultexam.MarksObtained = viewmodel.MarksObtained;
-                        _context.ExamResults.Update(resultexam);
+                _context.ExamResults.Update(resultexam);
 
                 await _context.SaveChangesAsync();
                 return RedirectToAction("ListCandidate", new {id = resultexam.ExamId});

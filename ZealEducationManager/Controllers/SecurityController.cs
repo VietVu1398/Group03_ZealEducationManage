@@ -19,7 +19,11 @@ namespace ZealEducationManager.Controllers
         }
         public IActionResult Login()
 		{
-			return View();
+            if(User.Identity.IsAuthenticated)
+             {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            return View();
 		}
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)

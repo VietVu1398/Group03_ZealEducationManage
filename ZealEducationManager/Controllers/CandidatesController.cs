@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using ZealEducationManager.Entities;
 using ZealEducationManager.Models.CandidatesViewModels;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ZealEducationManager.Controllers
 {
@@ -69,6 +71,21 @@ namespace ZealEducationManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                var dob = viewodel.DateOfBirth.ToDateTime(TimeOnly.MinValue);
+                if (dob >= DateTime.Today)
+                {
+                    ModelState.AddModelError("DateOfBirth", "The Date Of Birth must be earlier than today");
+                }
+                if (viewodel.DateOfBirth >= viewodel.DateOfJoining)
+                {
+                    ModelState.AddModelError("DateOfJoining", "The Date Of Joining must be later than the Date of Birth");
+                    viewodel.BatchCode = _context.Batches.Select(c => new SelectListItem
+                    {
+                        Value = c.BatchId.ToString(),
+                        Text = c.BatchCode
+                    });
+                    return View(viewodel);
+                }
                 var candidate = new Candidate
                 {
                     FirstName = viewodel.FirstName,
@@ -84,6 +101,11 @@ namespace ZealEducationManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            viewodel.BatchCode = _context.Batches.Select(c => new SelectListItem
+            {
+                Value = c.BatchId.ToString(),
+                Text = c.BatchCode
+            });
             return View(viewodel);
         }
 
@@ -164,26 +186,13 @@ namespace ZealEducationManager.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            } else
-            {
-                var viewModel = new EditCandidateView
-                {
-                    FirstName = viewmodel.FirstName,
-                    LastName = viewmodel.LastName,
-                    DateOfBirth = viewmodel.DateOfBirth,
-                    DateOfJoining = viewmodel.DateOfJoining,
-                    ContactInfo = viewmodel.ContactInfo,
-                    OutstandingFee = viewmodel.OutstandingFee,
-                    Status = viewmodel.Status,
-                    BatchId = viewmodel.BatchId,
-                    BatchCode = _context.Batches.Select(b => new SelectListItem
-                    {
-                        Value = b.BatchId.ToString(),
-                        Text = b.BatchCode
-                    })
-                };
             }
-
+            //Else (ModelState Is Invalid
+            viewmodel.BatchCode = _context.Batches.Select(c => new SelectListItem
+            {
+                Value = c.BatchId.ToString(),
+                Text = c.BatchCode
+            });
             return View(viewmodel);
         }
 

@@ -94,31 +94,42 @@ namespace ZealEducationManager.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             var batch = await _context.Batches.FindAsync(id);
             if (batch == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
-            return View(batch);
+            AddBatchViewModel modelView = new AddBatchViewModel
+            {
+                BatchId = batch.BatchId,
+                BatchCode = batch.BatchCode,
+                StartDate = batch.StartDate,
+                EndDate = batch.EndDate
+            };
+            return View(modelView);
         }
 
         // POST: Batches/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BatchId,BatchCode,StartDate,EndDate")] Batch batch)
+        public async Task<IActionResult> Edit(int id, [Bind("BatchId,BatchCode,StartDate,EndDate")] AddBatchViewModel batch)
         {
             if (id != batch.BatchId)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                   
                     var existBatchCode = _context.Batches
                         .Where(c => c.BatchCode == batch.BatchCode && c.BatchId != batch.BatchId).FirstOrDefault();
                     if (existBatchCode != null)
@@ -131,7 +142,15 @@ namespace ZealEducationManager.Controllers
                         ModelState.AddModelError("EndDate", "The start date must be earlier than the end date");
                         return View(batch);
                     }
-                    _context.Update(batch);
+                    var updatedBatch = _context.Batches
+                        .Where(c => c.BatchId == batch.BatchId).FirstOrDefault();
+                    if (updatedBatch != null)
+                    {
+                        updatedBatch.BatchCode = batch.BatchCode;
+                        updatedBatch.StartDate = batch.StartDate;
+                        updatedBatch.EndDate = batch.EndDate;
+                        _context.Update(updatedBatch);
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -163,7 +182,8 @@ namespace ZealEducationManager.Controllers
                 .FirstOrDefaultAsync(m => m.BatchId == id);
             if (batch == null)
             {
-                return NotFound();
+                TempData["message"] = "Cannot find any data";
+                return RedirectToAction("Message", "Dashboard");
             }
 
             return View(batch);

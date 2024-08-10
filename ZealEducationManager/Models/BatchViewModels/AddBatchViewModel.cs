@@ -6,7 +6,8 @@ namespace ZealEducationManager.Models.BatchViewModels
     public class AddBatchViewModel
     {
         public int BatchId { get; set; }
-        [Required(ErrorMessage = "Batch code is required")] 
+        [Required(ErrorMessage = "Batch code is required")]
+        [StringLength(20, ErrorMessage = "The BatchCode value cannot exceed 20 characters. ")]
         public string BatchCode { get; set; } = null!;
 
         [Required(ErrorMessage = "Start Date code is required")]
