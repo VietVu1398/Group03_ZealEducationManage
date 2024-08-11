@@ -25,7 +25,6 @@ public partial class Candidate
 
     public virtual Batch? Batch { get; set; }
 
-
     public virtual ICollection<Enquiry> Enquiries { get; set; } = new List<Enquiry>();
 
     public virtual ICollection<ExamResult> ExamResults { get; set; } = new List<ExamResult>();

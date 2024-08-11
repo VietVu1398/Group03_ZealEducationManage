@@ -44,7 +44,7 @@ public partial class ZealEducationManagerContext : DbContext
     {
         modelBuilder.Entity<Batch>(entity =>
         {
-            entity.HasKey(e => e.BatchId).HasName("PK__Batches__5D55CE38D6C718B3");
+            entity.HasKey(e => e.BatchId).HasName("PK__Batches__5D55CE38A2B502B8");
 
             entity.Property(e => e.BatchId).HasColumnName("BatchID");
             entity.Property(e => e.BatchCode)
@@ -75,7 +75,7 @@ public partial class ZealEducationManagerContext : DbContext
 
         modelBuilder.Entity<Course>(entity =>
         {
-            entity.HasKey(e => e.CourseId).HasName("PK__Courses__C92D71879936CB48");
+            entity.HasKey(e => e.CourseId).HasName("PK__Courses__C92D71879F5DB1CC");
 
             entity.Property(e => e.CourseId).HasColumnName("CourseID");
             entity.Property(e => e.CourseCode)
@@ -89,7 +89,7 @@ public partial class ZealEducationManagerContext : DbContext
 
         modelBuilder.Entity<Enquiry>(entity =>
         {
-            entity.HasKey(e => e.EnquiryId).HasName("PK__Enquirie__0A019B9D7401727C");
+            entity.HasKey(e => e.EnquiryId).HasName("PK__Enquirie__0A019B9DA58879CB");
 
             entity.Property(e => e.EnquiryId).HasColumnName("EnquiryID");
             entity.Property(e => e.CandidateId).HasColumnName("CandidateID");
@@ -106,12 +106,12 @@ public partial class ZealEducationManagerContext : DbContext
             entity.HasOne(d => d.Course).WithMany(p => p.Enquiries)
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Enquiries__Cours__45F365D3");
+                .HasConstraintName("FK__Enquiries__Cours__4CA06362");
         });
 
         modelBuilder.Entity<Exam>(entity =>
         {
-            entity.HasKey(e => e.ExamId).HasName("PK__Exams__297521A76BD56C7B");
+            entity.HasKey(e => e.ExamId).HasName("PK__Exams__297521A7C7FE3C58");
 
             entity.Property(e => e.ExamId).HasColumnName("ExamID");
             entity.Property(e => e.BatchId).HasColumnName("BatchID");
@@ -120,17 +120,17 @@ public partial class ZealEducationManagerContext : DbContext
             entity.HasOne(d => d.Batch).WithMany(p => p.Exams)
                 .HasForeignKey(d => d.BatchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Exams__BatchID__4222D4EF");
+                .HasConstraintName("FK__Exams__BatchID__4F7CD00D");
 
             entity.HasOne(d => d.Course).WithMany(p => p.Exams)
                 .HasForeignKey(d => d.CourseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Exams__CourseID__412EB0B6");
+                .HasConstraintName("FK__Exams__CourseID__5070F446");
         });
 
         modelBuilder.Entity<ExamResult>(entity =>
         {
-            entity.HasKey(e => e.ResultId).HasName("PK__ExamResu__9769022810DA8E17");
+            entity.HasKey(e => e.ResultId).HasName("PK__ExamResu__976902280CBD5E1D");
 
             entity.Property(e => e.ResultId).HasColumnName("ResultID");
             entity.Property(e => e.CandidateId).HasColumnName("CandidateID");
@@ -145,12 +145,12 @@ public partial class ZealEducationManagerContext : DbContext
             entity.HasOne(d => d.Exam).WithMany(p => p.ExamResults)
                 .HasForeignKey(d => d.ExamId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ExamResul__ExamI__4AB81AF0");
+                .HasConstraintName("FK__ExamResul__ExamI__4E88ABD4");
         });
 
         modelBuilder.Entity<Faculty>(entity =>
         {
-            entity.HasKey(e => e.FacultyId).HasName("PK__Facultie__306F636E5A602E0F");
+            entity.HasKey(e => e.FacultyId).HasName("PK__Facultie__306F636EC6E51641");
 
             entity.Property(e => e.FacultyId).HasColumnName("FacultyID");
             entity.Property(e => e.ContactInfo)
@@ -169,7 +169,7 @@ public partial class ZealEducationManagerContext : DbContext
 
         modelBuilder.Entity<FacultyBatch>(entity =>
         {
-            entity.HasKey(e => e.FacultyBatchId).HasName("PK__FacultyB__4A5B372916B93836");
+            entity.HasKey(e => e.FacultyBatchId).HasName("PK__FacultyB__4A5B3729F86FBF58");
 
             entity.Property(e => e.FacultyBatchId).HasColumnName("FacultyBatchID");
             entity.Property(e => e.BatchId).HasColumnName("BatchID");
@@ -178,17 +178,17 @@ public partial class ZealEducationManagerContext : DbContext
             entity.HasOne(d => d.Batch).WithMany(p => p.FacultyBatches)
                 .HasForeignKey(d => d.BatchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__FacultyBa__Batch__5629CD9C");
+                .HasConstraintName("FK__FacultyBa__Batch__5165187F");
 
             entity.HasOne(d => d.Faculty).WithMany(p => p.FacultyBatches)
                 .HasForeignKey(d => d.FacultyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__FacultyBa__Facul__5535A963");
+                .HasConstraintName("FK__FacultyBa__Facul__52593CB8");
         });
 
         modelBuilder.Entity<Payment>(entity =>
         {
-            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A5887BF28B4");
+            entity.HasKey(e => e.PaymentId).HasName("PK__Payments__9B556A588BC541AE");
 
             entity.Property(e => e.PaymentId).HasColumnName("PaymentID");
             entity.Property(e => e.Amount).HasColumnType("decimal(10, 2)");
@@ -202,7 +202,7 @@ public partial class ZealEducationManagerContext : DbContext
 
         modelBuilder.Entity<Report>(entity =>
         {
-            entity.HasKey(e => e.ReportId).HasName("PK__Reports__D5BD48E5DB9C04AB");
+            entity.HasKey(e => e.ReportId).HasName("PK__Reports__D5BD48E52E3A8B75");
 
             entity.Property(e => e.ReportId).HasColumnName("ReportID");
             entity.Property(e => e.ReportType)
@@ -212,7 +212,7 @@ public partial class ZealEducationManagerContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCACD02E8286");
+            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCACC01E85DB");
 
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.Password)
