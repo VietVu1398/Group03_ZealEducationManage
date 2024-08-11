@@ -58,8 +58,15 @@ namespace ZealEducationManager.Controllers
 
         public async Task<IActionResult> ListBatchExams(int? id)
         {
+            if(id == null)
+            {
+                TempData["message"] = "Oops! Something Went Wrong!!";
+                return RedirectToAction("Message", "Dashboard");
+            }
             var exams = await _context.Exams.Include(e => e.Course).Include(e => e.Batch)
                 .Where(e => e.BatchId == id).ToListAsync();
+            var batch = await _context.Batches.FindAsync(id);
+            ViewData["BatchCode"] = batch.BatchCode;
             return View(exams);
         }
 

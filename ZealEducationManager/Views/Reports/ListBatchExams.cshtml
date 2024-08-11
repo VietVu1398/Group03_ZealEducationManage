@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "ListBatchExams";
     Layout = "~/Views/Shared/Admin_Layout.cshtml";
+    var batchcode = ViewData["BatchCode"];
 }
 
 <div class="page-header">
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-            <h5 class="text-uppercase mb-0 mt-0 page-title">Exams</h5>
+            <h5 class="text-uppercase mb-0 mt-0 page-title">Exams in @batchcode </h5>
         </div>
     </div>
 </div>

@@ -25,6 +25,13 @@
 </div>
 
 
+<div class="row">
+	<div class="col-6">
+		<input class="form-control" type="text" id="search-input" placeholder="Search By Name">
+	</div>
+</div>
+<br />
+
 <div class="row staff-grid-row">
 	@foreach (var item in Model)
 	{
@@ -55,3 +62,59 @@
 		</div>
 	}
 </div>
+
+
+<br />
+<!-- Pagination -->
+
+<div class="row ">
+	<div class="offset-3 h4">
+		<nav aria-label="Page navigation">
+			<ul class="pagination" id="pagination">
+				<!-- Pagination links will be generated here -->
+			</ul>
+		</nav>
+	</div>
+</div>
+<br />
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const rowsPerPage = 12; // Số mục trên mỗi trang
+		const rows = document.querySelectorAll('.staff-grid-row .col-md-4');
+		const numPages = Math.ceil(rows.length / rowsPerPage);
+
+		const pagination = document.getElementById('pagination');
+		for (let i = 0; i < numPages; i++) {
+			const pageNumber = i + 1;
+			const pageLink = document.createElement('li');
+			pageLink.className = 'page-item';
+			pageLink.innerHTML = `<a class="page-link" href="#">${pageNumber}</a>`;
+			pagination.appendChild(pageLink);
+
+			pageLink.addEventListener('click', function (event) {
+				event.preventDefault();
+				showPage(pageNumber);
+			});
+		}
+
+		function showPage(pageNumber) {
+			rows.forEach((row, index) => {
+				row.style.display = (Math.floor(index / rowsPerPage) === pageNumber - 1) ? 'block' : 'none';
+			});
+		}
+
+		// Show the first page by default
+		showPage(1);
+		$('#search-input').on('keyup', function () {
+			var searchValue = $(this).val().toLowerCase();
+			$('.user-name').each(function () {
+				var text = $(this).text().toLowerCase();
+				if (text.indexOf(searchValue) > -1) {
+					$(this).closest('.col-md-4').show();
+				} else {
+					$(this).closest('.col-md-4').hide();
+				}
+			});
+		});
+	});
+</script>

@@ -3,11 +3,12 @@
     ViewData["Title"] = "List Candidate";
     Layout = "~/Views/Shared/Admin_Layout.cshtml";
     int examId = (int)ViewData["ExamId"];
+    var coursecode = ViewData["CourseCode"];
+    var batchcode = ViewData["BatchCode"];
 }
 
-<h1>ListCandidate</h1>
-@* <a asp-action="EnterMarks" asp-route-id="@examId" >Enter Mark</a> *@
-<table class="table">
+<h2>Candidates in Exam with CourseCode: @coursecode and BatchCode: @batchcode</h2>
+<table class="table datatable">
     <thead>
         <tr>
             <th>
@@ -19,6 +20,7 @@
             <th>
                 Mark
             </th>
+            <th>Status</th>
             <th>
                 Action
             </th>
@@ -41,6 +43,20 @@
                     } else
                     {
                         @Html.DisplayFor(modelItem => item.MarksObtained)
+                    }
+                </td>
+                <td>
+                    @if (item.MarksObtained != null && item.MarksObtained < 40)
+                    {
+                        <span class="text-danger">Failed</span>
+                    }
+                    else if (item.MarksObtained != null)
+                    {
+                        <span class="text-success">Passed</span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Not Available</span>
                     }
                 </td>
                 <td>

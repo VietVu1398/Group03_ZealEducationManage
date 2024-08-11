@@ -152,7 +152,7 @@ namespace ZealEducationManager.Controllers
                 return RedirectToAction("Message", "Dashboard");
             }
 
-            var exam = await _context.Exams
+            var exam = await _context.Exams.Include(e => e.Batch).Include(e => e.Course)
                 .FirstOrDefaultAsync(m => m.ExamId == id);
             if (exam == null)
             {
@@ -162,6 +162,8 @@ namespace ZealEducationManager.Controllers
             var listCandidate = await _context.ExamResults.Include(e => e.Candidate)
                 .Where(c => c.ExamId == exam.ExamId).ToListAsync();
             ViewData["ExamId"] = exam.ExamId;
+            ViewData["CourseCode"] = exam.Course.CourseCode;
+            ViewData["BatchCode"] = exam.Batch.BatchCode;
             return View(listCandidate);
         }
 
