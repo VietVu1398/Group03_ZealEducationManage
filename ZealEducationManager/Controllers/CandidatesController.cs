@@ -74,7 +74,12 @@ namespace ZealEducationManager.Controllers
                 var dob = viewodel.DateOfBirth.ToDateTime(TimeOnly.MinValue);
                 if (dob >= DateTime.Today)
                 {
-                    ModelState.AddModelError("DateOfBirth", "The Date Of Birth must be earlier than today");
+                    ModelState.AddModelError("DateOfBirth", "The Date Of Birth must be earlier than today"); viewodel.BatchCode = _context.Batches.Select(c => new SelectListItem
+                    {
+                        Value = c.BatchId.ToString(),
+                        Text = c.BatchCode
+                    });
+                    return View(viewodel);
                 }
                 if (viewodel.DateOfBirth >= viewodel.DateOfJoining)
                 {
@@ -161,6 +166,26 @@ namespace ZealEducationManager.Controllers
             {
                 try
                 {
+                    var dob = viewmodel.DateOfBirth.ToDateTime(TimeOnly.MinValue);
+                    if (dob >= DateTime.Today)
+                    {
+                        ModelState.AddModelError("DateOfBirth", "The Date Of Birth must be earlier than today"); viewmodel.BatchCode = _context.Batches.Select(c => new SelectListItem
+                        {
+                            Value = c.BatchId.ToString(),
+                            Text = c.BatchCode
+                        });
+                        return View(viewmodel);
+                    }
+                    if (viewmodel.DateOfBirth >= viewmodel.DateOfJoining)
+                    {
+                        ModelState.AddModelError("DateOfJoining", "The Date Of Joining must be later than the Date of Birth");
+                        viewmodel.BatchCode = _context.Batches.Select(c => new SelectListItem
+                        {
+                            Value = c.BatchId.ToString(),
+                            Text = c.BatchCode
+                        });
+                        return View(viewmodel);
+                    }
                     var candidate = await _context.Candidates.FindAsync(viewmodel.CandidateId);
                     candidate.FirstName = viewmodel.FirstName;
                     candidate.LastName = viewmodel.LastName;

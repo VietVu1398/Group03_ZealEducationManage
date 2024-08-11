@@ -26,7 +26,8 @@ namespace ZealEducationManager.Models.CandidatesViewModels
         [StringLength(100, ErrorMessage = "The  Contact Info value cannot exceed 100 characters. ")]
         public string? ContactInfo { get; set; }
 
-		public double? OutstandingFee { get; set; }
+        [Required(ErrorMessage = " OutstandingFee is required")]
+        public double? OutstandingFee { get; set; }
 
 		public int Status { get; set; }
 

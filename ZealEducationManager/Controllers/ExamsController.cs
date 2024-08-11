@@ -32,6 +32,7 @@ namespace ZealEducationManager.Controllers
         // GET: Exams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            
             if (id == null)
             {
                 TempData["message"] = "Cannot find any data";
@@ -78,6 +79,25 @@ namespace ZealEducationManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                var batch = _context.Batches.Where(b => b.BatchId == viewModel.BatchId).FirstOrDefault();
+                var examdate = viewModel.ExamDate.ToDateTime(TimeOnly.MinValue);
+                var startdate = batch.StartDate.ToDateTime(TimeOnly.MinValue);
+                var enddate = batch.EndDate.ToDateTime(TimeOnly.MinValue);
+                if (examdate < startdate || examdate > enddate)
+                {
+                    ModelState.AddModelError("ExamDate", "The Exam Date must be in dates range of Batch");
+                    viewModel.CourseCode = _context.Courses.Select(c => new SelectListItem
+                    {
+                        Value = c.CourseId.ToString(),
+                        Text = c.CourseCode
+                    });
+                    viewModel.BatchCode = _context.Batches.Select(b => new SelectListItem
+                    {
+                        Value = b.BatchId.ToString(),
+                        Text = b.BatchCode
+                    });
+                    return View(viewModel);
+                }
                 var exam = new Exam
                 {
                     ExamId = viewModel.ExamId,
@@ -108,7 +128,17 @@ namespace ZealEducationManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-			return View(viewModel);
+            viewModel.CourseCode = _context.Courses.Select(c => new SelectListItem
+            {
+                Value = c.CourseId.ToString(),
+                Text = c.CourseCode
+            });
+            viewModel.BatchCode = _context.Batches.Select(b => new SelectListItem
+            {
+                Value = b.BatchId.ToString(),
+                Text = b.BatchCode
+            });
+            return View(viewModel);
         }
 
 

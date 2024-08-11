@@ -19,10 +19,11 @@
             <div class="form-group">
                 <label class="control-label">CandidateID</label>
                 <input asp-for="CandidateId" class="form-control" />
+                <span asp-validation-for="CandidateId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
-                <input asp-for="Amount" class="form-control" />
+                <input type="number" asp-for="Amount" class="form-control"max="1000000" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="form-group">

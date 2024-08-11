@@ -107,7 +107,7 @@ namespace ZealEducationManager.Controllers
         public async Task<IActionResult> OutstandingFeeCandidates()
         {
             var candidates = await _context.Candidates.Include(c => c.Batch)
-                .Where(c => c.OutstandingFee!= 0).ToListAsync();
+                .Where(c => c.OutstandingFee!= 0  || c.OutstandingFee == null ).ToListAsync();
             if (candidates == null)
             {
                 TempData["message"] = "No Candidate has Outstanding Fee";

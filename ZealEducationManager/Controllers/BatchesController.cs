@@ -72,7 +72,7 @@ namespace ZealEducationManager.Controllers
                     ModelState.AddModelError("BatchCode", "Batch Code has already existed"); 
                     return View(batch);
                 }
-                if (batch.StartDate >= batch.EndDate)
+                if (batch.StartDate > batch.EndDate)
                 {
                     ModelState.AddModelError("EndDate", "The start date must be earlier than the end date");
                     return View(batch);
@@ -137,7 +137,7 @@ namespace ZealEducationManager.Controllers
                         ModelState.AddModelError("BatchCode", "Batch Code has already existed");
                         return View(batch);
                     }
-                    if (batch.StartDate >= batch.EndDate)
+                    if (batch.StartDate > batch.EndDate)
                     {
                         ModelState.AddModelError("EndDate", "The start date must be earlier than the end date");
                         return View(batch);
